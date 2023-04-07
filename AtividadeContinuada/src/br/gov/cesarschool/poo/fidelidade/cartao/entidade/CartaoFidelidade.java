@@ -8,7 +8,7 @@ public class CartaoFidelidade
     private double saldo;
     private Date dataHoraAtualizacao = new Date();
     
-    CartaoFidelidade(long numero)
+    public CartaoFidelidade(long numero)
     {
         this.numero = numero;
     }
