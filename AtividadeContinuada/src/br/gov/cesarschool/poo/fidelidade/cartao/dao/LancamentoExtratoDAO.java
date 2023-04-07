@@ -1,14 +1,20 @@
 package br.gov.cesarschool.poo.fidelidade.cartao.dao;
 
-import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtrato;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.*;
 
 public class LancamentoExtratoDAO {
-
-    public boolean incluir(LancamentoExtrato lancamento){
-        return false;
-    }
-
-    public boolean alterar(LancamentoExtrato lancamento){
-        return false;
-    }
+  
+  public LancamentoExtratoDAO() {
+    // code here
+  }
+  
+  public boolean incluir(LancamentoExtratoPontuacao pontuacao) {
+    // code here
+    return false;
+  }
+  
+  public boolean incluir(LancamentoExtratoResgate resgate) {
+    // code here
+    return false;
+  }
 }

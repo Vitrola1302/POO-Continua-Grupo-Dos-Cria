@@ -1,7 +1,7 @@
 package br.gov.cesarschool.poo.fidelidade.cliente.dao;
 
 //import br.gov.cesarschool.poo.fidelidade.cliente.entidade;
-import br.gov.cesarschool.poo.fidelidade.cliente.entidade.Cliente;
+import br.gov.cesarschool.poo.fidelidade.cliente.entidade.*;
 
 public class ClienteDAO {
 
