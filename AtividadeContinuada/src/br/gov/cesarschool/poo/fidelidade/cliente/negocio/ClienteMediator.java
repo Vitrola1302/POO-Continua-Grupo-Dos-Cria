@@ -45,9 +45,8 @@ public class ClienteMediator {
 	}
 	
 	private String validar(Cliente cliente) {
-		boolean cpf = false;// validate cpf
 		
-		if(cpf){// placeholder
+		if(!ValidadorCPF.ehCpfValido(cliente.getCpf())){
 			return "CPF inválido!!!";
 		}
 		else if(StringUtil.ehNuloOuBranco(cliente.getNomeCompleto())) {
@@ -60,9 +59,9 @@ public class ClienteMediator {
 			return "Renda deve ser maior ou igual a zero!!!";
 		}else if(StringUtil.ehNuloOuBranco(cliente.getEndereco().getLogradouro())) {
 			return "Endereço é obrigatório";
-		}else if(cliente.getEndereco().getLogradouro().length() >= 4) {
-			return "Endereço deve ter ao menos 4 caraccteres!!!";
-		}else if(cliente.getEndereco().getNumero() >= 0) {
+		}else if(cliente.getEndereco().getLogradouro().length() <= 4) {
+			return "Endereço deve ter ao menos 4 caracteres!!!";
+		}else if(cliente.getEndereco().getNumero() < 0) {
 			return "Numero deve ser maior ou igual a zero!!!";
 		}else if(StringUtil.ehNuloOuBranco(cliente.getEndereco().getCidade())) {
 			return  "Cidade é obrigatória";

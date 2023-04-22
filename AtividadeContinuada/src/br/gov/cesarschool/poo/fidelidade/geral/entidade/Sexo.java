@@ -20,4 +20,14 @@ public enum Sexo {
     public String getDescricao() {
         return descricao;
     }
+    public static Sexo getByCodigo (int codigo) {		
+    	if (codigo == 1) {
+			return MASCULINO;
+		}
+		if (codigo == 2) {
+			return FEMININO;
+		}
+		return null;
+	}
+    
 }
