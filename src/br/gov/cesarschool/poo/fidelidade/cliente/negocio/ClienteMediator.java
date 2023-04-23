@@ -59,7 +59,7 @@ public class ClienteMediator {
 			return "Renda deve ser maior ou igual a zero!!!";
 		}else if(StringUtil.ehNuloOuBranco(cliente.getEndereco().getLogradouro())) {
 			return "Endereço é obrigatório";
-		}else if(cliente.getEndereco().getLogradouro().length() <= 4) {
+		}else if(cliente.getEndereco().getLogradouro().length() < 4) {
 			return "Endereço deve ter ao menos 4 caracteres!!!";
 		}else if(cliente.getEndereco().getNumero() < 0) {
 			return "Numero deve ser maior ou igual a zero!!!";
