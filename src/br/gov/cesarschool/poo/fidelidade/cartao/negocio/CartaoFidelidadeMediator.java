@@ -40,7 +40,7 @@ public class CartaoFidelidadeMediator
 		return numero;		
 	}
 	
-	String pontuar(long numeroCartao, double quantidadePontos)
+	public String pontuar(long numeroCartao, double quantidadePontos)
 	{
 		CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
 		if(quantidadePontos <= 0)
@@ -58,7 +58,7 @@ public class CartaoFidelidadeMediator
 		return null;
 	}
 	
-	String resgatar(long numeroCartao, double quantidadePontos, TipoResgate tipo)
+	public String resgatar(long numeroCartao, double quantidadePontos, TipoResgate tipo)
 	{
 		CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
 		if(quantidadePontos <= 0)
