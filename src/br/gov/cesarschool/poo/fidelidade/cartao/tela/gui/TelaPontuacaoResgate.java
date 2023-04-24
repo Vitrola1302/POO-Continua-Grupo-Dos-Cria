@@ -109,7 +109,7 @@ public class TelaPontuacaoResgate {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setEnabled(false);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Tipo de Resgate"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"produto", "serviço", "viagem"}));
 		comboBox.setToolTipText("Tipo");
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		comboBox.setBounds(124, 234, 187, 22);
