@@ -1,6 +1,7 @@
 package br.gov.cesarschool.poo.fidelidade.cartao.negocio;
 
 import java.time.*;
+import java.util.Date;
 
 import br.gov.cesarschool.poo.fidelidade.cartao.dao.*;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.*;
@@ -29,7 +30,8 @@ public class CartaoFidelidadeMediator
 	
 	public long gerarCartao(Cliente cliente)
 	{
-		String cpfCliente = cliente.getCpf();
+		String cpfCliente = cliente.getCpf().substring(0, 8);
+		
 		LocalDate dataAtual = LocalDate.now();
 		
 		long numero = Long.parseLong(cpfCliente + dataAtual.getYear() + dataAtual.getMonthValue() + dataAtual.getDayOfMonth());
@@ -38,7 +40,7 @@ public class CartaoFidelidadeMediator
 		return numero;		
 	}
 	
-	String pontuar(long numeroCartao, double quantidadePontos)
+	public String pontuar(long numeroCartao, double quantidadePontos)
 	{
 		CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
 		if(quantidadePontos <= 0)
@@ -48,30 +50,32 @@ public class CartaoFidelidadeMediator
 		else if(cartao == null) {
 			return "Cartão não encontrado!";
 		}
-		else 
-		{
-			cartao.creditar(quantidadePontos);
-			repositorioCartao.alterar(cartao);
-			repositorioLancamento.incluir(new LancamentoExtratoPontuacao(numeroCartao, (int) quantidadePontos, null));
-		}
-		
+
+		cartao.creditar(quantidadePontos);
+		repositorioCartao.alterar(cartao);
+		repositorioLancamento.incluir(new LancamentoExtratoPontuacao(numeroCartao, (int) quantidadePontos, null));
+			
 		return null;
 	}
 	
-	String resgatar(long numeroCartao, double quantidadePontos, TipoResgate tipo)
+	public String resgatar(long numeroCartao, double quantidadePontos, TipoResgate tipo)
 	{
 		CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
 		if(quantidadePontos <= 0)
 		{
 			return "Quantidade de pontos é menor ou igual a zero!";
 		}
-		else if(cartao == null) {
+		if(cartao == null) {
 			return "Cartão não encontrado!";
 		}
-		//Se o saldo do cartão for menor do que quantidadePontos, retornar mensagem de erro pertinente.
-		//Debitare no cartão encontrado a quantidadePontos recebida.
-		//Alterar o cartão encontrado no repositorioCartao.
-		//Incluir em repositorioLancamento uma instância de LancamentoExtratoResgate com os dados do resgate.
+		if(cartao.getSaldo() < quantidadePontos) {
+			return "Saldo insuficiente";
+		}
+		cartao.debitar(quantidadePontos);
+		repositorioCartao.alterar(cartao);
+		Date data = new Date(); 
+		repositorioLancamento.incluir(new LancamentoExtratoResgate(numeroCartao, (int) quantidadePontos, data, tipo));
+		
 		return null;
 	}
 }

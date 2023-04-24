@@ -19,4 +19,15 @@ public enum TipoResgate{
     public String getDescricao(){
         return descricao;
     }
+    public static TipoResgate getByDescricao(String descricao) {
+        if(descricao == "produto") {
+            return PRODUTO;
+        }if(descricao == "serviço") {
+            return SERVICO;
+        }if(descricao == "viagem") {
+            return VIAGEM;
+        }else {
+            return null;
+        }
+    }
 }
