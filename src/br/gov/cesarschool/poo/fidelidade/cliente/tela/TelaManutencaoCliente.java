@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.MaskFormatter;
 
 import org.eclipse.swt.events.MouseAdapter;
@@ -28,6 +29,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
@@ -152,40 +155,51 @@ public class TelaManutencaoCliente extends JFrame {
 		
 		JComboBox comboBoxEstado = new JComboBox();
 		comboBoxEstado.setEnabled(false);
-		comboBoxEstado.setModel(new DefaultComboBoxModel(new String[] {"PE", "RJ"}));
+		comboBoxEstado.setModel(new DefaultComboBoxModel(new String[] {"Acre (AC)", "Alagoas (AL)", "Amapá (AP)", "Amazonas (AM)", "Bahia (BA)", "Ceará (CE)", "Distrito Federal (DF)", "Espírito Santo (ES)", "Goiás (GO)", "Maranhão (MA)", "Mato Grosso (MT)", "Mato Grosso do Sul (MS)", "Minas Gerais (MG)", "Pará (PA)", "Paraíba (PB)", "Paraná (PR)", "Pernambuco (PE)", "Piauí (PI)", "Rio de Janeiro (RJ)", "Rio Grande do Norte (RN)", "Rio Grande do Sul (RS)", "Rondônia (RO)", "Roraima (RR)", "Santa Catarina (SC)", "São Paulo (SP)", "Sergipe (SE)", "Tocantins (TO)"}));
 		comboBoxEstado.setBounds(140, 257, 150, 22);
 		contentPane.add(comboBoxEstado);
 		this.comboBoxEstado = comboBoxEstado;
 		
-		JFormattedTextField formattedTextFieldCPF = new JFormattedTextField(new MaskFormatter("###########")); // ###.###.###-##
+		JFormattedTextField formattedTextFieldCPF = new JFormattedTextField(new MaskFormatter("###.###.###-##")); // ###.###.###-##
 		formattedTextFieldCPF.setBounds(140, 8, 90, 20);
 		contentPane.add(formattedTextFieldCPF);
 		this.formattedTextFieldCPF = formattedTextFieldCPF;
 		
-		JFormattedTextField formattedTextFieldDataDeNascimento = new JFormattedTextField(new MaskFormatter("########")); // ##/##/####
+		JFormattedTextField formattedTextFieldDataDeNascimento = new JFormattedTextField(new MaskFormatter("##/##/####")); // ##/##/####
 		formattedTextFieldDataDeNascimento.setEnabled(false);
-		formattedTextFieldDataDeNascimento.setText("");
+		formattedTextFieldDataDeNascimento.setText("00000000");
 		formattedTextFieldDataDeNascimento.setBounds(140, 83, 71, 20);
 		contentPane.add(formattedTextFieldDataDeNascimento);
 		this.formattedTextFieldDataDeNascimento = formattedTextFieldDataDeNascimento;
 		
-		JFormattedTextField formattedTextFieldCep = new JFormattedTextField(new MaskFormatter("########")); // ##.###-###
-		formattedTextFieldCep.setText("");
+		JFormattedTextField formattedTextFieldCep = new JFormattedTextField(new MaskFormatter("##.###-###")); // ##.###-###
+		formattedTextFieldCep.setText("00000000");
 		formattedTextFieldCep.setEnabled(false);
 		formattedTextFieldCep.setBounds(140, 208, 71, 20);
 		contentPane.add(formattedTextFieldCep);
 		this.formattedTextFieldCep = formattedTextFieldCep;
 		
-		JFormattedTextField formattedTextFieldRenda = new JFormattedTextField(new MaskFormatter("############")); // ##########.##
-		formattedTextFieldRenda.setText("");
+		JFormattedTextField formattedTextFieldRenda = new JFormattedTextField(new MaskFormatter("########.##")); // ##########.##
 		formattedTextFieldRenda.setEnabled(false);
+		formattedTextFieldRenda.setText("0000000000");
 		formattedTextFieldRenda.setBounds(140, 108, 90, 20);
 		contentPane.add(formattedTextFieldRenda);
 		this.formattedTextFieldRenda = formattedTextFieldRenda;
+		formattedTextFieldRenda.setFocusLostBehavior(JFormattedTextField.PERSIST);
+		formattedTextFieldRenda.addFocusListener(new FocusListener(){
+		 
+		            public void focusGained(FocusEvent e) 
+		            {
+		            	formattedTextFieldRenda.setText(formattedTextFieldRenda.getText().trim());
+		            }
+		 
+		            public void focusLost(FocusEvent e) {
+		                 
+		            }});
 		
-		JFormattedTextField formattedTextFieldNumero = new JFormattedTextField(new MaskFormatter("#######"));
-		formattedTextFieldNumero.setText("");
+		JFormattedTextField formattedTextFieldNumero = new JFormattedTextField(new MaskFormatter("******#"));
 		formattedTextFieldNumero.setEnabled(false);
+		formattedTextFieldNumero.setText("0000000");
 		formattedTextFieldNumero.setBounds(140, 158, 59, 20);
 		contentPane.add(formattedTextFieldNumero);
 		this.formattedTextFieldNumero = formattedTextFieldNumero;
@@ -193,7 +207,17 @@ public class TelaManutencaoCliente extends JFrame {
 		JButton btnNovo = new JButton("Novo");
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String cpf = getCpf();
+				String cpf;
+				try {
+					cpf = formattedTextFieldCPF.getDocument().getText(0, formattedTextFieldCPF.getDocument().getLength())
+					        .replaceAll("\\D", "");
+					System.out.println(cpf);
+				} catch (BadLocationException e1) {
+					JOptionPane.showMessageDialog(null, 
+							"Formato de cpf inválido");
+					return;
+				}
+				String value = (String) formattedTextFieldCPF.getValue();
 				if(!ValidadorCPF.ehCpfValido(cpf)) {
 					JOptionPane.showMessageDialog(null, 
 							"Formato de cpf inválido!");
@@ -219,8 +243,16 @@ public class TelaManutencaoCliente extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String cpf = getCpf();
-				if (ValidadorCPF.ehCpfValido(cpf)) {
+				String cpf;
+				try {
+					cpf = formattedTextFieldCPF.getDocument().getText(0, formattedTextFieldCPF.getDocument().getLength())
+					        .replaceAll("\\D", "");
+				} catch (BadLocationException e1) {
+					JOptionPane.showMessageDialog(null, 
+							"Formato de cpf inválido");
+					return;
+				}
+				if (!ValidadorCPF.ehCpfValido(cpf)) {
 					JOptionPane.showMessageDialog(null, 
 							"Formato de cpf inválido!");
 					return;
@@ -244,7 +276,7 @@ public class TelaManutencaoCliente extends JFrame {
 					textFieldComplemento.setText(cliente.getEndereco().getComplemento());
 					formattedTextFieldCep.setText(cliente.getEndereco().getCep());
 					textFieldCidade.setText(cliente.getEndereco().getCidade());	
-					//comboBoxEstado.set; //Set estado to cliente.getEndereco().getEstado();
+					comboBoxEstado.setSelectedItem(cliente.getEndereco().getEstado());
 				}
 				disableAcessElements();
 				enableDetailElements();;
@@ -277,8 +309,24 @@ public class TelaManutencaoCliente extends JFrame {
 	    btnIncluirAlterar.setEnabled(false);
 	    btnIncluirAlterar.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		String cpf = formattedTextFieldCPF.getText();
+	    		
+	    		String cpf;
+	    		try {
+					cpf = formattedTextFieldCPF.getDocument().getText(0, formattedTextFieldCPF.getDocument().getLength())
+					        .replaceAll("\\D", "");
+				} catch (BadLocationException e1) {
+					JOptionPane.showMessageDialog(null, 
+							"Formato de cpf inválido");
+					return;
+				}
+	    		
 	    		String nome = textFieldNome.getText();
+	    		System.out.println(nome);
+	    		if(StringUtil.ehNuloOuBranco(nome)) {
+	    			JOptionPane.showMessageDialog(null, 
+							"Campo Nome completo vazio");
+					return;
+	    		}
 	    		
 	    		Sexo sexo;
 	    		if(rdbtnM.isSelected()) {
@@ -288,17 +336,63 @@ public class TelaManutencaoCliente extends JFrame {
 	    			sexo = Sexo.getByCodigo(2);
 	    			
 	    		} else {
-	    			sexo = null;
+	    			JOptionPane.showMessageDialog(null, 
+							"Sexo inválido");
+					return;
 	    		}
 	    		
-	    		Date dataDeNascimento = new Date(Long.parseLong(formattedTextFieldDataDeNascimento.getText()));
+	    		long longData;
+	    		try {
+	    			longData = Long.parseLong(formattedTextFieldDataDeNascimento.getDocument().getText(0, formattedTextFieldDataDeNascimento.getDocument().getLength())
+					        .replaceAll("\\D", ""));
+	    			
+				} catch (BadLocationException e1) {
+					JOptionPane.showMessageDialog(null, 
+							"Formato de data de nascimento inválido");
+					return;
+				}
+	    		if(!dataIsValid(longData)) {
+	    			JOptionPane.showMessageDialog(null, 
+							"Formato de data de nascimento inválido!!");
+	    			return;
+	    		}
+	    		Date dataDeNascimento = new Date(longData);
+	    		
 	    		double renda = Double.parseDouble(formattedTextFieldRenda.getText());
 	    		
 	    		String logradouro = textFieldLogradouro.getText();
+	    		if(StringUtil.ehNuloOuBranco(logradouro)) {
+	    			JOptionPane.showMessageDialog(null, 
+							"Campo Logradouro vazio");
+					return;
+	    		}
+	    		
 	    		int numero = Integer.parseInt(formattedTextFieldNumero.getText());
+	    		
 	    		String complemento = textFieldComplemento.getText();
-	    		String cep = formattedTextFieldCep.getText();
+	    		if(StringUtil.ehNuloOuBranco(complemento)) {
+	    			JOptionPane.showMessageDialog(null, 
+							"Campo Complemento vazio");
+					return;
+	    		}
+	    		
+	    		String cep;
+	    		try {
+					cep = formattedTextFieldCep.getDocument().getText(0, formattedTextFieldCep.getDocument().getLength())
+					        .replaceAll("\\D", "");
+				} catch (BadLocationException e1) {
+					JOptionPane.showMessageDialog(null, 
+							"Formato de cep inválido");
+					return;
+				}
+	    		
 	    		String cidade = textFieldCidade.getText();
+	    		if(StringUtil.ehNuloOuBranco(cidade)) {
+	    			JOptionPane.showMessageDialog(null, 
+							"Campo Cidade vazio");
+					return;
+	    		}
+	    		
 	    		String estado = comboBoxEstado.getSelectedItem().toString();
 	    		String pais = "Brasil";
 	    		
@@ -352,19 +446,16 @@ public class TelaManutencaoCliente extends JFrame {
 	    this.btnVoltar = btnVoltar;
 	    
 	}
-	private String getCpf() {
-		return formattedTextFieldCPF.getText().trim();
-	}
 	private void clear() {
 		textFieldNome.setText("");
 		rdbtnM.setSelected(false);
 		rdbtnF.setSelected(false);
-		formattedTextFieldDataDeNascimento.setText("");
-		formattedTextFieldRenda.setText("");
+		formattedTextFieldDataDeNascimento.setText("00000000");
+		formattedTextFieldRenda.setText("0000000000");
 		textFieldLogradouro.setText("");	
-		formattedTextFieldNumero.setText("");
+		formattedTextFieldNumero.setText("0000000");
 		textFieldComplemento.setText("");
-		formattedTextFieldCep.setText("");
+		formattedTextFieldCep.setText("00000000");
 		textFieldCidade.setText("");
 	}
 	private void enableDetailElements() {
@@ -414,5 +505,8 @@ public class TelaManutencaoCliente extends JFrame {
 		clear();
 		disableDetailElements();
 		enableAcessElements();		
+	}
+	private boolean dataIsValid(long data) {
+		return !(data >=32000000 || data%1000000 >= 130000 || ( data%1000000 <= 20000 && data >=29000000) || ((data%20000 < 10000 && data%100000 < 80000 ) || (data%20000 >= 10000 && data%100000 >= 80000)) && data >=31000000);
 	}
 }
