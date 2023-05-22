@@ -1,8 +1,11 @@
 package br.gov.cesarschool.poo.fidelidade.cartao.entidade;
-import  java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class LancamentoExtratoPontuacao extends LancamentoExtrato{
-	public LancamentoExtratoPontuacao(long numeroCartao, int quantidadePontos, Date dataHoraAtualizacao){
-		super(numeroCartao, quantidadePontos, dataHoraAtualizacao);
+public class LancamentoExtratoPontuacao extends LancamentoExtrato implements Serializable {
+
+	public LancamentoExtratoPontuacao(long numeroCartao, double quantidadePontos, LocalDateTime dataHoraLancamento) {
+		super(numeroCartao, quantidadePontos, dataHoraLancamento);
 	}
+	
 }

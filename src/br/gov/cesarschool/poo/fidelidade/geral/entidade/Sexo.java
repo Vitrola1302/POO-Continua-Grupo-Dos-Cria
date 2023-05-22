@@ -1,33 +1,22 @@
 package br.gov.cesarschool.poo.fidelidade.geral.entidade;
 
-public enum Sexo {
-    MASCULINO(1, "Masculino"),
-    FEMININO(2, "Feminino");
+import java.io.Serializable;
 
-
-    private final int codigo;
-    private final String descricao;
-
-    Sexo(int codigo, String descricao) {
-        this.codigo = codigo;
-        this.descricao = descricao;
-    }
-
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-    public static Sexo getByCodigo (int codigo) {		
-    	if (codigo == 1) {
-			return MASCULINO;
-		}
-		if (codigo == 2) {
-			return FEMININO;
-		}
-		return null;
+public enum Sexo implements Serializable {
+	FEMININO(1, "Feminino"),
+	MASCULINO(2, "Masculino");
+	
+	private int codigo;
+	private String descricao;
+	
+	private Sexo(int codigo, String descricao) {
+		this.codigo = codigo;
+		this.descricao = descricao;
 	}
-    
+	public int getCodigo() {
+		return codigo;
+	}
+	public String getDescricao() {
+		return descricao;
+	}	
 }

@@ -1,81 +1,105 @@
 package br.gov.cesarschool.poo.fidelidade.cartao.negocio;
 
-import java.time.*;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.CartaoFidelidade;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtratoPontuacao;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtratoResgate;
+import br.gov.cesarschool.poo.fidelidade.cartao.dao.CartaoFidelidadeDAO;
+import br.gov.cesarschool.poo.fidelidade.cartao.dao.LancamentoExtratoDAO;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.TipoResgate;
+import br.gov.cesarschool.poo.fidelidade.cliente.entidade.Cliente;
+import br.gov.cesarschool.poo.fidelidade.util.ValidadorCPF;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.LocalDateTime;
 
-import br.gov.cesarschool.poo.fidelidade.cartao.dao.*;
-import br.gov.cesarschool.poo.fidelidade.cartao.entidade.*;
-import br.gov.cesarschool.poo.fidelidade.cliente.entidade.*;
+public class CartaoFidelidadeMediator {
 
-public class CartaoFidelidadeMediator
-{
+	private static final String ERRO_AO_INCLUIR_LANCAMENTO = "Erro ao incluir lançamento";
+	private static final String ERRO_NA_ALTERACAO_DO_CARTAO = "Erro na alteração do cartão";
+	private static final String CARTAO_INEXISTENTE = "Cartão não existe";
+	private static final String QUANTIDADE_DE_PONTOS_MENOR_QUE_ZERO = "Quantidade de pontos menor que zero";
 	private static CartaoFidelidadeMediator instance;
 	private CartaoFidelidadeDAO repositorioCartao;
 	private LancamentoExtratoDAO repositorioLancamento;
 	
-	private CartaoFidelidadeMediator()
-	{
-		this.repositorioCartao = new CartaoFidelidadeDAO();
-		this.repositorioLancamento = new LancamentoExtratoDAO();
+	
+	private CartaoFidelidadeMediator() {
+		repositorioCartao = new CartaoFidelidadeDAO();
+		repositorioLancamento = new LancamentoExtratoDAO();
 	}
 	
-	public static CartaoFidelidadeMediator getInstance()
-	{
-		if (instance == null)
-		{
+	public static CartaoFidelidadeMediator getInstance() {
+		if (instance == null) {	
 			instance = new CartaoFidelidadeMediator();
 		}
 		return instance;
 	}
 	
-	public long gerarCartao(Cliente cliente)
-	{
-		String cpfCliente = cliente.getCpf().substring(0, 8);
-		
-		LocalDate dataAtual = LocalDate.now();
-		
-		long numero = Long.parseLong(cpfCliente + dataAtual.getYear() + dataAtual.getMonthValue() + dataAtual.getDayOfMonth());
-		
-		repositorioCartao.incluir(new CartaoFidelidade(numero));
-		return numero;		
+	public long gerarCartao(Cliente cliente) {
+		SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");		
+		String cpf = cliente.getCpf();		
+		if (ValidadorCPF.ehCpfValido(cpf) == false) {
+			return 0;
+		}		
+		String cpfSemDigitosVerificadores = cpf.substring(0, cpf.length() - 2);		
+		String cartao = cpfSemDigitosVerificadores + date.format(new Date()); 
+		long cardZinho = Long.parseLong(cartao);		
+		CartaoFidelidade cardinhu = new CartaoFidelidade(cardZinho);		
+		repositorioCartao.incluir(cardinhu);				
+		return cardZinho;
 	}
-	
-	public String pontuar(long numeroCartao, double quantidadePontos)
-	{
-		CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
-		if(quantidadePontos <= 0)
-		{
-			return "Quantidade de pontos é menor ou igual a zero!";
-		}
-		else if(cartao == null) {
-			return "Cartão não encontrado!";
-		}
 
-		cartao.creditar(quantidadePontos);
-		repositorioCartao.alterar(cartao);
-		repositorioLancamento.incluir(new LancamentoExtratoPontuacao(numeroCartao, (int) quantidadePontos, null));
-			
+	private String processarAlteracaoCartaoInclusaoLancamento(CartaoFidelidade cardinhu, 
+			int qtdPontos, TipoResgate tipo) {
+		boolean res = repositorioCartao.alterar(cardinhu);
+		if (!res) {
+			return ERRO_NA_ALTERACAO_DO_CARTAO;
+		}
+		LocalDateTime now = LocalDateTime.now();
+		if (tipo == null) {
+			res = repositorioLancamento.incluir(new LancamentoExtratoPontuacao(
+					cardinhu.getNumeroFidelidade(), qtdPontos, now));
+		} else {
+			res = repositorioLancamento.incluir(new LancamentoExtratoResgate(
+					cardinhu.getNumeroFidelidade(), qtdPontos, now, tipo));			
+		}		
+		if (!res) {
+			return ERRO_AO_INCLUIR_LANCAMENTO;
+		}
 		return null;
 	}
 	
-	public String resgatar(long numeroCartao, double quantidadePontos, TipoResgate tipo)
-	{
-		CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
-		if(quantidadePontos <= 0)
-		{
-			return "Quantidade de pontos é menor ou igual a zero!";
-		}
-		if(cartao == null) {
-			return "Cartão não encontrado!";
-		}
-		if(cartao.getSaldo() < quantidadePontos) {
-			return "Saldo insuficiente";
-		}
-		cartao.debitar(quantidadePontos);
-		repositorioCartao.alterar(cartao);
-		Date data = new Date(); 
-		repositorioLancamento.incluir(new LancamentoExtratoResgate(numeroCartao, (int) quantidadePontos, data, tipo));
-		
-		return null;
+	public String pontuar(long numeroCartao, int qtdPontos) {
+		if (qtdPontos <= 0 ) {
+			return QUANTIDADE_DE_PONTOS_MENOR_QUE_ZERO;
+		}		
+		CartaoFidelidade cardinhu = repositorioCartao.buscar(numeroCartao);		
+		if(cardinhu == null) {
+			return CARTAO_INEXISTENTE;
+		}		
+		cardinhu.creditar(qtdPontos);
+		return processarAlteracaoCartaoInclusaoLancamento(cardinhu, 
+				qtdPontos, null);
+	}
+	
+	public String resgatar(long numeroCartao, int qtdPontos, TipoResgate tipo) {		
+		if (qtdPontos <= 0) {
+			return QUANTIDADE_DE_PONTOS_MENOR_QUE_ZERO;
+		}		
+	    CartaoFidelidade cardinhu = repositorioCartao.buscar(numeroCartao);
+	    if (cardinhu == null) {
+	        return CARTAO_INEXISTENTE;
+	    }
+	    if (cardinhu.getSaldo() < qtdPontos) {
+	        return "Saldo insuficiente para realizar o resgate.";
+	    }	        
+        cardinhu.debitar(qtdPontos);
+		return processarAlteracaoCartaoInclusaoLancamento(cardinhu, 
+				qtdPontos, null);
+	}
+	
+	public CartaoFidelidade buscarCartao(long numeroCartao) {
+	    CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
+	    return cartao;
 	}
 }

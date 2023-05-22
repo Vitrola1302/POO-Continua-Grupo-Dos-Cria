@@ -1,73 +1,57 @@
 package br.gov.cesarschool.poo.fidelidade.util;
 
 public class ValidadorCPF {
-    
-    private ValidadorCPF()
-    {
-        
-    }
-    
-    public static boolean ehCpfValido(String cpf)
-    {
-        if (cpf == null || cpf.isEmpty() || cpf.length() != 11)
-        {
-            return false;
+	 
+	private ValidadorCPF() {}
+	
+	public static boolean ehCpfValido(String cpf) {
+	    if (cpf == null) {
+        	return false;
+	    }
+	    if (cpf.length() != 11) {
+        	return false;
+	    }
+	    for (int i = 0; i < cpf.length(); i++) {
+	        char c = cpf.charAt(i);
+	        if (!Character.isDigit(c)) {
+	        	return false;
+	        }
+	    }
+	    int[] numeros = new int[11];
+        for (int i = 0; i < 11; i++) {
+            numeros[i] = Character.getNumericValue(cpf.charAt(i));
         }
-        
-        for (int i = 0; i < 11; i+=1) 
-        {
-              if (!Character.isDigit(cpf.charAt(i)))
-              {
-                return false;
-              }
-        }
-        
         int soma = 0;
-        int digitoVerificador1;
-        int digitoVerificador2;
-        
-        for (int i = 0; i < 9; i += 1)
-        {
-            soma += Character.getNumericValue(cpf.charAt(i)) * (10 - i);     
+        for (int i = 0; i < 9; i++) {
+            soma += numeros[i] * (10 - i);
         }
-        
-        if (soma % 11 == 0 || soma % 11 == 1)
-        {
-            digitoVerificador1 = 0;
-        }
-        
-        else
-        {
-            digitoVerificador1 = 11 - (soma % 11);
-        }
-        
-        soma = 0;
-        
-        for (int i = 1; i < 9; i += 1)
-        {
-            soma += Character.getNumericValue(cpf.charAt(i)) * (11 - i);     
-        }
-        
-        soma += digitoVerificador1 * 2;
-        
-        if (soma % 11 == 0 || soma % 11 == 1)
-        {
-            digitoVerificador2 = 0;
-        }
-        
-        else
-        {
-            digitoVerificador2 = 11 - (soma % 11);
-        }
-        
-        if (digitoVerificador1 == Character.getNumericValue(cpf.charAt(9)) && digitoVerificador2 == Character.getNumericValue(cpf.charAt(10)))
-        {
-            return true;
-        }
-        
-        else
-        {
+        int resto = soma % 11;
+        int dv1 = resto < 2 ? 0 : 11 - resto;
+
+        if (numeros[9] != dv1) {
             return false;
         }
-    }
+        soma = 0;
+        for (int i = 0; i < 10; i++) {
+            soma += numeros[i] * (11 - i);
+        }
+        resto = soma % 11;
+        int dv2 = resto < 2 ? 0 : 11 - resto;
+        if (numeros[10] != dv2) {
+            return false;
+        }        
+        int cont = 0;
+        //verifica cpf com todos ou praticamente todos com numeros iguais
+        for (int i = 1; i < cpf.length(); i++) {
+            if (cpf.charAt(i) == cpf.charAt(0)) {
+            	cont++;
+            }
+        } 
+        if (cont >= 10) {
+        	return false;
+        }
+	    return true;
+	}
 }
+	
+
