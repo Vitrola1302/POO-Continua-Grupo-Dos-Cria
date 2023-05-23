@@ -9,54 +9,23 @@ import java.time.format.DateTimeFormatter;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtrato;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtratoPontuacao;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtratoResgate;
+import br.gov.cesarschool.poo.fidelidade.util.DAOGenerico;
 
 public class LancamentoExtratoDAO {
 	
 	private static final String FILE_SEP = System.getProperty("file.separator");
 	private static final String DIR_BASE = "." + FILE_SEP + "fidelidade" + FILE_SEP + "lancamento" + FILE_SEP;
-	private static final String EXT = ".dat";
+	private DAOGenerico daoEncapsulado;
 	
 	public LancamentoExtratoDAO() {
-		File diretorio = new File(DIR_BASE);
-        if (!diretorio.exists()) {
-            diretorio.mkdir();
-        }
-	}
-	
-	private File getArquivo(long numero, String tipo) {
-		String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-		String chaveLancamento = tipo + numero + timestamp; 
-        String nomeArq = DIR_BASE + chaveLancamento + EXT;
-        return new File(nomeArq);
-    }
-
-	private void incluirAux(LancamentoExtrato extrato, String tipo) {
-		FileOutputStream fos = null;
-		ObjectOutputStream oos = null;
-		File arq = getArquivo(extrato.getNumeroCartao(), tipo);
-		try {
-			fos = new FileOutputStream(arq);
-			oos = new ObjectOutputStream(fos);
-			oos.writeObject(extrato);
-		} catch (Exception e) {
-			throw new RuntimeException("Erro ao incluir lançamento");
-		} finally {
-			try {
-				oos.close();
-			} catch (Exception e) {}
-			try {
-				fos.close();
-			} catch (Exception e) {}			
-		}
+		this.daoEncapsulado = new DAOGenerico(DIR_BASE);
 	}
 	
 	public boolean incluir(LancamentoExtratoPontuacao pontuacao) {
-        incluirAux(pontuacao, "P");
-		return true;
+		return daoEncapsulado.incluir(pontuacao);
 	}
 	
 	public boolean incluir(LancamentoExtratoResgate resgate) {
-		incluirAux(resgate, "R");
-		return true; 
+		return daoEncapsulado.incluir(resgate);
 	}
 }
