@@ -1,8 +1,9 @@
 package br.gov.cesarschool.poo.fidelidade.cartao.entidade;
-import java.io.Serializable;
 import java.util.*;
 
-public class CartaoFidelidade implements Serializable {
+import br.gov.cesarschool.poo.fidelidade.util.Identificavel;
+
+public class CartaoFidelidade extends Identificavel {
 	
 	private long numero;
 	private double saldo;
@@ -11,6 +12,9 @@ public class CartaoFidelidade implements Serializable {
 	public CartaoFidelidade(long numero) {
 		this.numero = numero;
 	}
+	public String obterChave() {
+ 		return numero + "";
+ 	}
 	public long getNumeroFidelidade() {
     	return numero;
     }

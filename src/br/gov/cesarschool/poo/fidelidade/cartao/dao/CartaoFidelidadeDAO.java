@@ -19,7 +19,7 @@ public class CartaoFidelidadeDAO {
         }
     }
 
-    private File getArquivo(long numero) {
+    private File getArquivo(String numero) {
         String nomeArq = DIR_BASE + numero + EXT;
         return new File(nomeArq);
     }
@@ -32,7 +32,7 @@ public class CartaoFidelidadeDAO {
             oos = new ObjectOutputStream(fos);
             oos.writeObject(cartao);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao incluir cartão fidelidade");
+            throw new RuntimeException("Erro ao incluir cartï¿½o fidelidade");
         } finally {
             try {
                 oos.close();
@@ -46,7 +46,7 @@ public class CartaoFidelidadeDAO {
     }
 
     public boolean incluir(CartaoFidelidade cartao) {
-        File arq = getArquivo(cartao.getNumeroFidelidade());
+        File arq = getArquivo(cartao.getNumeroFidelidade() + "");
         if (arq.exists()) {
             return false;
         }
@@ -55,7 +55,7 @@ public class CartaoFidelidadeDAO {
     }
 
     public boolean alterar(CartaoFidelidade cartao) {
-        File arq = getArquivo(cartao.getNumeroFidelidade());
+        File arq = getArquivo(cartao.getNumeroFidelidade() + "");
         if (!arq.exists()) {
             return false;
         }
@@ -66,7 +66,7 @@ public class CartaoFidelidadeDAO {
         return true;
     }
 
-    public CartaoFidelidade buscar(long numero) {
+    public CartaoFidelidade buscar(String numero) {
         File arq = getArquivo(numero);
         if (!arq.exists()) {
             return null;
@@ -78,7 +78,7 @@ public class CartaoFidelidadeDAO {
             ois = new ObjectInputStream(fis);
             return (CartaoFidelidade) ois.readObject();
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao ler cartão fidelidade");
+            throw new RuntimeException("Erro ao ler cartï¿½o fidelidade");
         } finally {
             try {
                 ois.close();

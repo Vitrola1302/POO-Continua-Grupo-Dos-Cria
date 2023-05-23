@@ -1,12 +1,12 @@
 package br.gov.cesarschool.poo.fidelidade.cliente.entidade;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.Endereco;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.Sexo;
+import br.gov.cesarschool.poo.fidelidade.util.Identificavel;
 
 import java.util.Date;
-import java.io.Serializable;
 import java.util.Calendar;
 
-public class Cliente implements Serializable {
+public class Cliente extends Identificavel {
 	private String cpf;
 	private	String nomeCompleto;
 	private Sexo sexo;
@@ -22,8 +22,11 @@ public class Cliente implements Serializable {
 	        this.renda = renda;
 	        this.endereco = endereco;
 	 }
-	 
-	 public String getCpf() {
+	 	public String obterChave() {
+	 		return cpf;
+	 	}
+
+	 	public String getCpf() {
 	        return cpf;
 	    }
 

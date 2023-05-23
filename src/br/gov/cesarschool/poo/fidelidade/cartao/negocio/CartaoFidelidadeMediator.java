@@ -69,7 +69,7 @@ public class CartaoFidelidadeMediator {
 		return null;
 	}
 	
-	public String pontuar(long numeroCartao, int qtdPontos) {
+	public String pontuar(String numeroCartao, int qtdPontos) {
 		if (qtdPontos <= 0 ) {
 			return QUANTIDADE_DE_PONTOS_MENOR_QUE_ZERO;
 		}		
@@ -82,7 +82,7 @@ public class CartaoFidelidadeMediator {
 				qtdPontos, null);
 	}
 	
-	public String resgatar(long numeroCartao, int qtdPontos, TipoResgate tipo) {		
+	public String resgatar(String numeroCartao, int qtdPontos, TipoResgate tipo) {		
 		if (qtdPontos <= 0) {
 			return QUANTIDADE_DE_PONTOS_MENOR_QUE_ZERO;
 		}		
@@ -98,7 +98,7 @@ public class CartaoFidelidadeMediator {
 				qtdPontos, null);
 	}
 	
-	public CartaoFidelidade buscarCartao(long numeroCartao) {
+	public CartaoFidelidade buscarCartao(String numeroCartao) {
 	    CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
 	    return cartao;
 	}
