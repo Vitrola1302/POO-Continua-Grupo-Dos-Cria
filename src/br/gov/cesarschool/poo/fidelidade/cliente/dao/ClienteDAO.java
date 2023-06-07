@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.CartaoFidelidade;
 import br.gov.cesarschool.poo.fidelidade.cliente.entidade.Cliente;
-import br.gov.cesarschool.poo.fidelidade.util.DAOGenerico;
+import br.gov.cesarschool.poo.fidelidade.geral.dao.*;
 
 public class ClienteDAO {
 	private static final String FILE_SEP = System.getProperty("file.separator");

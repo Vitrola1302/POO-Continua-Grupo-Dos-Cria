@@ -1,7 +1,7 @@
 package br.gov.cesarschool.poo.fidelidade.cliente.entidade;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.Endereco;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.Sexo;
-import br.gov.cesarschool.poo.fidelidade.util.Identificavel;
+import br.gov.cesarschool.poo.fidelidade.geral.entidade.*;
 
 import java.util.Date;
 import java.util.Calendar;
