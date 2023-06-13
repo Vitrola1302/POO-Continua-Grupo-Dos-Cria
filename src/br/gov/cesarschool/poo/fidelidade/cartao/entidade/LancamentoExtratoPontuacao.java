@@ -5,8 +5,4 @@ public class LancamentoExtratoPontuacao extends LancamentoExtrato{
 	public LancamentoExtratoPontuacao(long numeroCartao, int quantidadePontos, Date dataHoraAtualizacao){
 		super(numeroCartao, quantidadePontos, dataHoraAtualizacao);
 	}
-	
-	public String getIdentificadorTipo() {
-		return "P";
-	}
 }
