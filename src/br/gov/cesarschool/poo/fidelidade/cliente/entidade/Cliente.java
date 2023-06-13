@@ -1,16 +1,20 @@
 package br.gov.cesarschool.poo.fidelidade.cliente.entidade;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.*;
+import lombok.ToString;
+import lombok.ToString.Exclude;
 
 import java.util.Date;
 import java.util.Calendar;
 
+@ToString
 public class Cliente extends Identificavel implements Comparavel {
 	private String cpf;
 	private	String nomeCompleto;
 	private Sexo sexo;
-	private Date dataNascimento;
 	private double renda;
 	private Endereco endereco;
+	@Exclude
+	private Date dataNascimento;
 	
 	 public Cliente(String cpf, String nomeCompleto, Sexo sexo, Date dataNascimento, double renda, Endereco endereco) {
 	        this.cpf = cpf;
