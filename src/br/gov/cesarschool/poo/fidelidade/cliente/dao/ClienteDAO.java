@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.CartaoFidelidade;
 import br.gov.cesarschool.poo.fidelidade.cliente.entidade.Cliente;
 import br.gov.cesarschool.poo.fidelidade.geral.dao.*;
+import br.gov.cesarschool.poo.fidelidade.geral.entidade.Identificavel;
 
 public class ClienteDAO {
 	private static final String FILE_SEP = System.getProperty("file.separator");
@@ -53,7 +54,7 @@ public class ClienteDAO {
         if(contadorClientes == 0) {
             return new Cliente[0];
         }
-        return clientesList;
+        return clientes;
         
     }
 }

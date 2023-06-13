@@ -1,12 +1,10 @@
 package br.gov.cesarschool.poo.fidelidade.cliente.entidade;
-import br.gov.cesarschool.poo.fidelidade.geral.entidade.Endereco;
-import br.gov.cesarschool.poo.fidelidade.geral.entidade.Sexo;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.*;
 
 import java.util.Date;
 import java.util.Calendar;
 
-public class Cliente extends Identificavel {
+public class Cliente extends Identificavel implements Comparavel {
 	private String cpf;
 	private	String nomeCompleto;
 	private Sexo sexo;
@@ -79,4 +77,19 @@ public class Cliente extends Identificavel {
 	        }
 	        return idade;
 	    }
+
+		public int comparar(Comparavel outraEntidade) {
+			Cliente cliente2 = (Cliente) outraEntidade;
+			
+			int resultado;
+			if(nomeCompleto.compareTo(cliente2.getNomeCompleto()) > 0) {
+				resultado = 1;
+			}else if(nomeCompleto.compareTo(cliente2.getNomeCompleto()) < 0) {
+				resultado = -1;
+			}else {
+				resultado = 0;
+			}
+			
+			return resultado; //Retorna 0 caso iguais, 1 caso cliente2 seja menor ou -1 caso maior.
+		}
 }
