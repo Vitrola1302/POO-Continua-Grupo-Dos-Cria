@@ -13,4 +13,9 @@ public class LancamentoExtratoPontuacao extends LancamentoExtrato {
  		return "P" + numeroCartao + timestamp;
  	}
 	
+	
+	public String getIdentificadorTipo() {
+		return "P";
+	}
+	
 }
