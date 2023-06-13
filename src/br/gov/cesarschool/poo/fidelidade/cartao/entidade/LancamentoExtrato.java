@@ -43,7 +43,5 @@ public abstract class LancamentoExtrato extends Identificavel implements Compara
 		
 		return resultado; //Retorna 0 caso iguais, 1 caso extrato2 seja mais recente ou -1 caso mais antigo.
 	}
-	
-	 public abstract String getIdentificadorTipo();
 
 }

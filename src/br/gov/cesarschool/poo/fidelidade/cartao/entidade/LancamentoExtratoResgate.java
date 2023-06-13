@@ -19,6 +19,10 @@ public class LancamentoExtratoResgate extends LancamentoExtrato {
 	public TipoResgate getTipoResgate() {
 	    return tipoResgate;
 	}
+	
+    public TipoResgate getTipoResgate() {
+        return tipoResgate;
+    }
     
     public String getIdentificadorTipo() {
     	return "R";
