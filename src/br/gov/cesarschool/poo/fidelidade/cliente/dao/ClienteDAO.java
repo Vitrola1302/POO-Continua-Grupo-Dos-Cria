@@ -31,4 +31,29 @@ public class ClienteDAO {
 	public Cliente buscar(String chave) {
 		return (Cliente)daoEncapsulado.buscar(chave);
 	}
+	
+	public Cliente[] buscarTodos() {
+        Identificavel[] identificaveis = daoEncapsulado.buscarTodos();
+        
+        Cliente[] clientes = new Cliente[identificaveis.length];
+        
+        int contadorClientes = 0;
+        
+        for(Identificavel ident:identificaveis) {
+            
+            Object objeto = (Object) ident;
+            
+            if(objeto instanceof Cliente) {
+                clientes[contadorClientes] = (Cliente) ident;
+                
+                contadorClientes++;
+            }
+        }
+        
+        if(contadorClientes == 0) {
+            return new Cliente[0];
+        }
+        return clientesList;
+        
+    }
 }
