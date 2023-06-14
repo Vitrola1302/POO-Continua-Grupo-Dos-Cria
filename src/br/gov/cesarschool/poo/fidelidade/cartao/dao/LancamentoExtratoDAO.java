@@ -30,73 +30,7 @@ public class LancamentoExtratoDAO {
 	public boolean incluir(LancamentoExtratoResgate resgate) {
 		return daoEncapsulado.incluir(resgate);
 	}
-}
-public LancamentoExtrato[] buscarTodos() {
-    Identificavel[] identificaveis = daoEncapsulado.buscarTodos();
 
-    LancamentoExtrato[] lancamentos = new LancamentoExtrato[identificaveis.length];
-
-    int contadorLancamentos = 0;
-
-    for (Identificavel ident : identificaveis) {
-        Object objeto = (Object) ident;
-
-        if (objeto instanceof LancamentoExtrato) {
-            lancamentos[contadorLancamentos] = (LancamentoExtrato) ident;
-
-            contadorLancamentos++;
-        }
-    }
-
-    if (contadorLancamentos == 0) {
-        return new LancamentoExtrato[0];
-    }
-    return lancamentos;
-}
-public LancamentoExtrato[] buscarTodos() {
-    Identificavel[] identificaveis = daoEncapsulado.buscarTodos();
-
-    LancamentoExtrato[] lancamentos = new LancamentoExtrato[identificaveis.length];
-
-    int contadorLancamentos = 0;
-
-    for (Identificavel ident : identificaveis) {
-        Object objeto = (Object) ident;
-
-        if (objeto instanceof LancamentoExtrato) {
-            lancamentos[contadorLancamentos] = (LancamentoExtrato) ident;
-
-            contadorLancamentos++;
-        }
-    }
-
-    if (contadorLancamentos == 0) {
-        return new LancamentoExtrato[0];
-    }
-    return lancamentos;
-}
-public LancamentoExtrato[] buscarTodos() {
-    Identificavel[] identificaveis = daoEncapsulado.buscarTodos();
-
-    LancamentoExtrato[] lancamentos = new LancamentoExtrato[identificaveis.length];
-
-    int contadorLancamentos = 0;
-
-    for (Identificavel ident : identificaveis) {
-        Object objeto = (Object) ident;
-
-        if (objeto instanceof LancamentoExtrato) {
-            lancamentos[contadorLancamentos] = (LancamentoExtrato) ident;
-
-            contadorLancamentos++;
-        }
-    }
-
-    if (contadorLancamentos == 0) {
-        return new LancamentoExtrato[0];
-    }
-    return lancamentos;
-}
 	public LancamentoExtrato[] buscarTodos() {
 	    Identificavel[] identificaveis = daoEncapsulado.buscarTodos();
 	
@@ -119,4 +53,6 @@ public LancamentoExtrato[] buscarTodos() {
 	    }
 	    return lancamentos;
 	}
+}
+
 	

@@ -28,6 +28,7 @@ public abstract class LancamentoExtrato extends Identificavel implements Compara
 	public LocalDateTime getDataHoraLancamento() {
 		return dataHoraLancamento;
 	}
+	public abstract String getIdentificadorTipo();
 	
 	public int comparar(Comparavel outraEntidade) {
 		LancamentoExtrato extrato2 = (LancamentoExtrato) outraEntidade;

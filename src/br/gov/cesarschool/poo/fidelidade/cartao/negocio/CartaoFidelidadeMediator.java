@@ -1,12 +1,16 @@
 package br.gov.cesarschool.poo.fidelidade.cartao.negocio;
 
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.CartaoFidelidade;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtrato;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtratoPontuacao;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtratoResgate;
 import br.gov.cesarschool.poo.fidelidade.cartao.dao.CartaoFidelidadeDAO;
 import br.gov.cesarschool.poo.fidelidade.cartao.dao.LancamentoExtratoDAO;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.TipoResgate;
 import br.gov.cesarschool.poo.fidelidade.cliente.entidade.Cliente;
+import br.gov.cesarschool.poo.fidelidade.geral.entidade.RetornoConsultaExtrato;
+import br.gov.cesarschool.poo.fidelidade.util.Ordenador;
+import br.gov.cesarschool.poo.fidelidade.util.StringUtil;
 import br.gov.cesarschool.poo.fidelidade.util.ValidadorCPF;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -101,5 +105,54 @@ public class CartaoFidelidadeMediator {
 	public CartaoFidelidade buscarCartao(String numeroCartao) {
 	    CartaoFidelidade cartao = repositorioCartao.buscar(numeroCartao);
 	    return cartao;
+	}
+	
+	public RetornoConsultaExtrato consultaEntreDatas(String numeroCartao, LocalDateTime inicio,	LocalDateTime fim) {
+		RetornoConsultaExtrato retorno = null;
+		LancamentoExtrato[] listaFinal = null;
+		String message = null;
+		int count = 0;
+		if(StringUtil.ehNuloOuBranco(numeroCartao)){
+			message = "Numero não pode ser nulo ou branco"; 
+			
+		}else if(inicio == null) {
+			message = "Data de inicio não pode ser nula"; 
+			
+		}else if(fim != null){
+			if(inicio.compareTo(fim) > 0) {
+				message = "Data de fim não pode ser mais recente que a data de inicio"; 
+			}
+		}else {
+			LancamentoExtrato[] lista = repositorioLancamento.buscarTodos();
+			LancamentoExtrato[] listaAux = new LancamentoExtrato[lista.length];
+			for(LancamentoExtrato lancamento:lista) {
+				if(lancamento.getNumeroCartao() == Long.parseLong(numeroCartao)) {
+					if(inicio.compareTo(lancamento.getDataHoraLancamento()) > 0) {
+						if(fim != null) {
+							if(fim.compareTo(lancamento.getDataHoraLancamento()) < 0) {
+								listaAux[count] = lancamento;
+								count++;
+							}
+						}else {
+							listaAux[count] = lancamento;
+							count++;
+						}
+					}
+				}
+			}		
+			listaFinal = new LancamentoExtrato[count];
+			int i = 0;
+			for(LancamentoExtrato lancamento:listaAux) {
+				if(lancamento != null) {
+					listaFinal[i] = lancamento;
+					i++;
+				}
+			}
+
+		}
+			Ordenador.ordenar(listaFinal);
+			retorno = new RetornoConsultaExtrato(listaFinal, message);	
+		
+		return retorno;
 	}
 }
