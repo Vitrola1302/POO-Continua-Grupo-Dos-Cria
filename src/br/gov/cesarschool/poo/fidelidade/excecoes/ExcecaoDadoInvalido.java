@@ -1,4 +1,4 @@
-package br.gov.cesarschool.poo.fidelidade.cartao.negocio;
+package br.gov.cesarschool.poo.fidelidade.excecoes;
 
 public class ExcecaoDadoInvalido extends Exception{
 	public ExcecaoDadoInvalido(String message) {

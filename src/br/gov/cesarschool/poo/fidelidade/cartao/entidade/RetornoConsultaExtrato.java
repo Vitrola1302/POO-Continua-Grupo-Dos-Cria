@@ -1,5 +1,4 @@
-package br.gov.cesarschool.poo.fidelidade.geral.entidade;
-import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtrato;
+package br.gov.cesarschool.poo.fidelidade.cartao.entidade;
 import lombok.*;
 	
 @NoArgsConstructor

@@ -1,4 +1,4 @@
-package br.gov.cesarschool.poo.fidelidade.cliente.relatorios;
+package br.gov.cesarschool.poo.fidelidade.cartao.relatorios;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,9 +7,9 @@ import java.util.Scanner;
 import br.gov.cesarschool.poo.fidelidade.cartao.dao.CartaoFidelidadeDAO;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.CartaoFidelidade;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtrato;
+import br.gov.cesarschool.poo.fidelidade.cartao.entidade.RetornoConsultaExtrato;
 import br.gov.cesarschool.poo.fidelidade.cartao.negocio.CartaoFidelidadeMediator;
-import br.gov.cesarschool.poo.fidelidade.geral.entidade.RetornoConsultaExtrato;
-import br.gov.cesarschool.poo.fidelidade.cartao.negocio.ExcecaoDadoInvalido;
+import br.gov.cesarschool.poo.fidelidade.excecoes.ExcecaoDadoInvalido;
 
 public class RelatorioExtrato {
 	
