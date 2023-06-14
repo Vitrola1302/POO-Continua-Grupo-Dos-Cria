@@ -24,14 +24,13 @@ public class RelatorioCliente {
             String dataNascimento = cliente.getDataNascimento().toString();
             String renda = String.format("%.2f", cliente.getRenda());
 
-            System.out.println(nome + "-" + dataNascimento + "-" + renda);
+            System.out.println(nome + "–" + dataNascimento + "–" + renda);
         }
     }
 
     public static void main(String[] args) {
-        ClienteMediator clienteMediator = ClienteMediator.getInstance();
         gerarRelatorioClientes();
-            }
+    }
 
             
 }

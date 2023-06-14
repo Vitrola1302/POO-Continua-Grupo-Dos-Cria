@@ -38,7 +38,7 @@ public class DAOGenerico <T extends Identificavel>{
             oos = new ObjectOutputStream(fos);
             oos.writeObject(ident);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao incluir identificavel");
+            throw new RuntimeException("Erro ao incluir identificavel" + e.getMessage());
         } finally {
             try {
                 oos.close();
