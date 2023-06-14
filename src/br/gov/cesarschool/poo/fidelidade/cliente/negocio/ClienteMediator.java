@@ -100,6 +100,11 @@ public class ClienteMediator {
 	}
 	
 	public Cliente[] consultarClientesOrdenadosPorNome() {
-		
+		 Cliente[] clientes = repositorioCliente.buscarTodos();
+	        
+	        Ordenador ordenator = new Ordenador();
+	        ordenator.ordenar(clientes);
+	        return clientes;
+	        
 	}
 }

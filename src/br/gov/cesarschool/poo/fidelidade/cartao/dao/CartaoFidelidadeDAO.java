@@ -11,7 +11,7 @@ import br.gov.cesarschool.poo.fidelidade.geral.dao.*;
 public class CartaoFidelidadeDAO{
 	private static final String FILE_SEP = System.getProperty("file.separator");
 	private static final String DIR_BASE = "." + FILE_SEP + "fidelidade" + FILE_SEP + "cartao" + FILE_SEP;
-    private DAOGenerico daoEncapsulado;
+    private DAOGenerico <CartaoFidelidade>daoEncapsulado;
 
     public CartaoFidelidadeDAO() {
     	this.daoEncapsulado = new DAOGenerico(DIR_BASE);
@@ -24,6 +24,6 @@ public class CartaoFidelidadeDAO{
     	return daoEncapsulado.alterar(cartao);
     }
     public CartaoFidelidade buscar(String chave) {
-        return (CartaoFidelidade)daoEncapsulado.buscar(chave);
+        return daoEncapsulado.buscar(chave);
     }
 }

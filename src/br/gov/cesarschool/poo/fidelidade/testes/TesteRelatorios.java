@@ -20,6 +20,7 @@ import br.gov.cesarschool.poo.fidelidade.cartao.relatorios.RelatorioExtrato;
 import br.gov.cesarschool.poo.fidelidade.cliente.dao.ClienteDAO;
 import br.gov.cesarschool.poo.fidelidade.cliente.entidade.Cliente;
 import br.gov.cesarschool.poo.fidelidade.cliente.relatorios.RelatorioCliente;
+import br.gov.cesarschool.poo.fidelidade.excecoes.ExcecaoDadoInvalido;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.Endereco;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.Sexo;
 
@@ -55,7 +56,7 @@ public class TesteRelatorios {
 	}
 	@Test
 	public void testarRelatorioClientes() {		
-		outDoSystem.println("################# Testando Relatório de clientes ################# ");
+		outDoSystem.println("################# Testando Relatï¿½rio de clientes ################# ");
 		Cliente[] clientes = obterClientes();
 		ClienteDAO daoCli = new ClienteDAO();
 		boolean res = false;
@@ -67,8 +68,8 @@ public class TesteRelatorios {
 		Assertions.assertEquals(meuPs.getText(), OUT_REL_CLI);		
 	}
 	@Test
-	public void testarRelatorioLancamentos() {	
-		outDoSystem.println("################# Testando Relatório de lançamentos ################# ");
+	public void testarRelatorioLancamentos() throws ExcecaoDadoInvalido { //throws declaration nÃ£o  tava no original
+		outDoSystem.println("################# Testando Relatï¿½rio de lanï¿½amentos ################# ");
 		LancamentoExtrato[] lancamentos = obterLancamentos();
 		LancamentoExtratoDAO lancDao = new LancamentoExtratoDAO();
 		CartaoFidelidadeMediator cartaoMed = CartaoFidelidadeMediator.getInstance();

@@ -17,40 +17,20 @@ public class LancamentoExtratoDAO {
 	
 	private static final String FILE_SEP = System.getProperty("file.separator");
 	private static final String DIR_BASE = "." + FILE_SEP + "fidelidade" + FILE_SEP + "lancamento" + FILE_SEP;
-	private DAOGenerico daoEncapsulado;
+	private DAOGenerico <LancamentoExtrato>daoEncapsulado;
 	
 	public LancamentoExtratoDAO() {
 		this.daoEncapsulado = new DAOGenerico(DIR_BASE);
 	}
 	
-	public boolean incluir(LancamentoExtratoPontuacao pontuacao) {
-		return daoEncapsulado.incluir(pontuacao);
-	}
-	
-	public boolean incluir(LancamentoExtratoResgate resgate) {
-		return daoEncapsulado.incluir(resgate);
+	public boolean incluir(LancamentoExtrato lancamento) {
+		return daoEncapsulado.incluir(lancamento);
 	}
 
 	public LancamentoExtrato[] buscarTodos() {
-	    Identificavel[] identificaveis = daoEncapsulado.buscarTodos();
+		LancamentoExtrato[] lancamentos = daoEncapsulado.buscarTodos();
 	
-	    LancamentoExtrato[] lancamentos = new LancamentoExtrato[identificaveis.length];
 	
-	    int contadorLancamentos = 0;
-	
-	    for (Identificavel ident : identificaveis) {
-	        Object objeto = (Object) ident;
-	
-	        if (objeto instanceof LancamentoExtrato) {
-	            lancamentos[contadorLancamentos] = (LancamentoExtrato) ident;
-	
-	            contadorLancamentos++;
-	        }
-	    }
-	
-	    if (contadorLancamentos == 0) {
-	        return new LancamentoExtrato[0];
-	    }
 	    return lancamentos;
 	}
 }

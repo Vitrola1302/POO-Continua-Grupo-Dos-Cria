@@ -13,11 +13,11 @@ import br.gov.cesarschool.poo.fidelidade.excecoes.ExcecaoDadoInvalido;
 
 public class RelatorioExtrato {
 	
-	public void gerarRelatorioExtratos(String numeroCartao, LocalDateTime inicio, LocalDateTime fim) {
+	public static void gerarRelatorioExtratos(long numeroCartao, LocalDateTime inicio, LocalDateTime fim) {
 		CartaoFidelidadeMediator mediator = CartaoFidelidadeMediator.getInstance();
 		
 		try {			
-			RetornoConsultaExtrato retorno = mediator.consultaEntreDatas(numeroCartao, inicio, fim);
+			RetornoConsultaExtrato retorno = mediator.consultaEntreDatas(numeroCartao + "", inicio, fim);
 			
 			LancamentoExtrato[] lancamentos = retorno.getLancamentos();
 			if(lancamentos != null) {			
@@ -39,7 +39,7 @@ public class RelatorioExtrato {
 		RelatorioExtrato relatorio = new RelatorioExtrato();
 		
 		System.out.println("Informe o número do cartão");
-		String numero = entrada.nextLine();
+		long numero = entrada.nextLong();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		
@@ -52,6 +52,6 @@ public class RelatorioExtrato {
 		LocalDateTime dateTimeFim = LocalDateTime.parse(dataIn, formatter);
 		
 		
-		relatorio.gerarRelatorioExtratos(numero, dateTimeIn, dateTimeFim);
+		gerarRelatorioExtratos(numero, dateTimeIn, dateTimeFim);
 	}
 }
