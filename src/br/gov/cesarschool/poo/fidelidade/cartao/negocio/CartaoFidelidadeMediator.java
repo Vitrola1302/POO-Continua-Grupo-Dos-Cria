@@ -107,20 +107,23 @@ public class CartaoFidelidadeMediator {
 	    return cartao;
 	}
 	
-	public RetornoConsultaExtrato consultaEntreDatas(String numeroCartao, LocalDateTime inicio,	LocalDateTime fim) {
+	public RetornoConsultaExtrato consultaEntreDatas(String numeroCartao, LocalDateTime inicio,	LocalDateTime fim) throws ExcecaoDadoInvalido{
 		RetornoConsultaExtrato retorno = null;
 		LancamentoExtrato[] listaFinal = null;
 		String message = null;
 		int count = 0;
 		if(StringUtil.ehNuloOuBranco(numeroCartao)){
-			message = "Numero não pode ser nulo ou branco"; 
+			message = "Numero não pode ser nulo ou branco";
+			throw new ExcecaoDadoInvalido(message);
 			
 		}else if(inicio == null) {
 			message = "Data de inicio não pode ser nula"; 
+			throw new ExcecaoDadoInvalido(message);
 			
 		}else if(fim != null){
 			if(inicio.compareTo(fim) > 0) {
 				message = "Data de fim não pode ser mais recente que a data de inicio"; 
+				throw new ExcecaoDadoInvalido(message);
 			}
 		}else {
 			LancamentoExtrato[] lista = repositorioLancamento.buscarTodos();

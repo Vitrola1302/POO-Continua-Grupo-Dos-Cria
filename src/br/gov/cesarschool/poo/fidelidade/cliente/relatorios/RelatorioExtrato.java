@@ -9,27 +9,28 @@ import br.gov.cesarschool.poo.fidelidade.cartao.entidade.CartaoFidelidade;
 import br.gov.cesarschool.poo.fidelidade.cartao.entidade.LancamentoExtrato;
 import br.gov.cesarschool.poo.fidelidade.cartao.negocio.CartaoFidelidadeMediator;
 import br.gov.cesarschool.poo.fidelidade.geral.entidade.RetornoConsultaExtrato;
+import br.gov.cesarschool.poo.fidelidade.cartao.negocio.ExcecaoDadoInvalido;
 
 public class RelatorioExtrato {
 	
 	public void gerarRelatorioExtratos(String numeroCartao, LocalDateTime inicio, LocalDateTime fim) {
 		CartaoFidelidadeMediator mediator = CartaoFidelidadeMediator.getInstance();
 		
-		RetornoConsultaExtrato retorno = mediator.consultaEntreDatas(numeroCartao, inicio, fim);
-		
-		if(retorno.getMensagemErro() != null) {
-			System.out.println("Erro: " + retorno.getMensagemErro());
-		}else {
+		try {			
+			RetornoConsultaExtrato retorno = mediator.consultaEntreDatas(numeroCartao, inicio, fim);
+			
 			LancamentoExtrato[] lancamentos = retorno.getLancamentos();
 			if(lancamentos != null) {			
 				for(LancamentoExtrato lancamento:lancamentos) {
 					LocalDateTime data = lancamento.getDataHoraLancamento();
 					double valor = lancamento.getquantidadePontos();
 					String tipo = lancamento.getIdentificadorTipo();
-					
+						
 					System.out.println(data + "–" + String.format("%.2f", valor) + "–" + tipo);
 				}
 			}
+		} catch (ExcecaoDadoInvalido e) {
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -49,6 +50,7 @@ public class RelatorioExtrato {
 		System.out.println("Informe a data de fim");
 		String dataFim = entrada.nextLine();
 		LocalDateTime dateTimeFim = LocalDateTime.parse(dataIn, formatter);
+		
 		
 		relatorio.gerarRelatorioExtratos(numero, dateTimeIn, dateTimeFim);
 	}
